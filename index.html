@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#e9a7bf">
+<title>Organização Acadêmica</title>
+<style>
+:root{
+ --pink:#e9a7bf;--pink-dark:#bd718f;--pink-light:#fbeaf1;--pink-soft:#fff7fa;
+ --orange:#e99a3a;--orange-light:#fff2df;--green:#55a477;--red:#c85c68;
+ --ink:#302a31;--muted:#817781;--line:#eadfe4;--bg:#fcf9fa;--white:#fff;
+ --shadow:0 7px 24px rgba(88,55,70,.07);--radius:18px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{width:250px;background:#fff;border-right:1px solid var(--line);padding:22px 15px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;z-index:20}
+.brand{display:flex;gap:10px;align-items:center;padding:5px 8px 25px}
+.logo{width:39px;height:39px;border-radius:12px;background:var(--pink);color:#fff;display:grid;place-items:center;font-weight:900}
+.brand b{font-size:15px}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.nav{display:grid;gap:5px}.nav button{border:0;background:transparent;color:var(--muted);padding:12px;border-radius:11px;text-align:left;font-weight:700}.nav button.active,.nav button:hover{background:var(--pink-light);color:var(--pink-dark)}
+.side-bottom{margin-top:auto;display:grid;gap:8px}
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:11px;padding:10px 13px;font-weight:750}
+.btn.primary{background:var(--pink);border-color:var(--pink);color:#fff}.btn.primary:hover{background:var(--pink-dark)}
+.btn.soft{background:var(--pink-soft);color:var(--pink-dark);border-color:transparent}
+.note{font-size:11px;line-height:1.45;color:var(--muted);background:var(--pink-soft);border:1px solid var(--line);padding:12px;border-radius:12px}
+.main{flex:1;min-width:0;padding:27px clamp(15px,4vw,45px) 50px}.content{max-width:1450px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:22px}.top h1{font-size:27px;margin:0 0 5px}.top p{margin:0;color:var(--muted);font-size:13px}.actions{display:flex;gap:8px;flex-wrap:wrap}
+.filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid var(--line);padding:12px;border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:18px}
+.filters select,.filters input{height:40px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:0 10px;color:var(--ink);max-width:260px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:18px}.stat{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow)}.stat small{color:var(--muted)}.stat strong{font-size:28px;display:block;margin:5px 0}
+.section{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:19px;box-shadow:var(--shadow);margin-bottom:18px}.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.section-head h2{margin:0;font-size:17px}.section-head span{font-size:11px;color:var(--muted)}
+.week{display:grid;grid-template-columns:repeat(7,minmax(115px,1fr));gap:8px;overflow-x:auto}.day{min-height:175px;border:1px solid var(--line);background:#fffafd;border-radius:13px;padding:9px}.day.today{border:2px solid var(--pink)}.day-head{display:flex;justify-content:space-between;margin-bottom:8px}.day-head b{font-size:12px}.day-head span{font-size:11px;color:var(--muted)}
+.mini{background:#fff;border:1px solid var(--line);border-left:4px solid var(--pink);border-radius:8px;padding:7px;margin-bottom:6px;font-size:10px;cursor:pointer}.mini.high{border-left-color:var(--orange);background:var(--orange-light)}.mini.done{opacity:.55;text-decoration:line-through}.mini b{display:block}.mini small{color:var(--muted)}
+.kanban{display:grid;grid-template-columns:repeat(6,minmax(190px,1fr));gap:10px;overflow-x:auto}.col{background:#faf7f9;border-radius:14px;padding:10px;min-height:350px}.colhead{display:flex;justify-content:space-between;margin-bottom:9px;font-size:12px}.count{background:#eee8ec;border-radius:99px;padding:2px 7px;color:var(--muted)}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;cursor:pointer}.card:hover{box-shadow:0 4px 12px rgba(0,0,0,.05)}.card b{font-size:12px;line-height:1.35}.meta{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}.tag{font-size:9px;font-weight:800;background:var(--pink-light);color:var(--pink-dark);padding:4px 7px;border-radius:99px}.tag.orange{background:var(--orange-light);color:#a96712}.tag.green{background:#e8f6ee;color:#367253}.tag.red{background:#fcebed;color:#a63e4b}.date{font-size:10px;color:var(--muted);margin-top:8px}
+.list{display:grid;gap:8px}.row{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:12px;cursor:pointer;background:#fff}.row-main{flex:1;min-width:0}.row-main b{font-size:12px}.row-main p{margin:4px 0 0;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.calendar-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.calendar-head h2{margin:0;font-size:18px}.cal{display:grid;grid-template-columns:repeat(7,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}.cell{min-height:105px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:7px;background:#fff}.cell.muted{background:#fcfafb;color:#aaa}.cell.today{box-shadow:inset 0 0 0 2px var(--pink)}.num{font-size:11px;font-weight:800}.calitem{font-size:9px;background:var(--pink-light);color:var(--pink-dark);padding:4px;border-radius:5px;margin-top:4px;cursor:pointer}.calitem.high{background:var(--orange-light);color:#a96712}
+.empty{text-align:center;color:#aaa;padding:30px 10px;font-size:12px}
+.modal-bg{position:fixed;inset:0;background:rgba(30,20,26,.36);display:none;align-items:center;justify-content:center;padding:15px;z-index:100}.modal-bg.open{display:flex}.modal{width:min(720px,100%);max-height:93vh;overflow:auto;background:#fff;border-radius:20px;padding:21px}.modal-top{display:flex;justify-content:space-between;gap:12px}.modal h2{margin:0;font-size:19px}.close{border:0;background:#f4edf0;border-radius:9px;width:34px;height:34px}.form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:17px}.field{display:grid;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:10px;font-weight:850;color:var(--muted)}.field input,.field select,.field textarea{border:1px solid var(--line);border-radius:10px;padding:10px;outline:none;color:var(--ink);background:#fff}.field textarea{min-height:100px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--pink)}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.detail{background:var(--pink-soft);border-radius:12px;padding:13px;margin-top:13px}.detail label{display:block;color:var(--muted);font-size:9px;font-weight:850;text-transform:uppercase}.detail div{font-size:12px;line-height:1.5;margin-top:4px;white-space:pre-wrap}.steps{display:grid;gap:7px;margin-top:10px}.step{display:flex;align-items:center;gap:8px;border:1px solid var(--line);padding:9px;border-radius:9px}.step span{flex:1;font-size:11px}.step button{border:0;background:transparent;color:var(--muted)}
+.mobile-nav{display:none}
+@media(max-width:1100px){.kanban{grid-template-columns:repeat(6,220px)}}
+@media(max-width:760px){
+ .sidebar{display:none}.main{padding:17px 12px 75px}.top{align-items:flex-start}.top h1{font-size:22px}.actions .secondary{display:none}
+ .grid4{grid-template-columns:1fr 1fr;gap:8px}.stat{padding:13px}.stat strong{font-size:22px}.filters{box-shadow:none;padding:9px}.filters select{flex:1;min-width:140px}.week{grid-template-columns:repeat(7,120px)}
+ .section{padding:14px;box-shadow:none}.cal .cell{min-height:80px}.form{grid-template-columns:1fr}.field.full{grid-column:auto}
+ .mobile-nav{position:fixed;display:flex;bottom:0;left:0;right:0;height:64px;background:#fff;border-top:1px solid var(--line);z-index:80;padding-bottom:env(safe-area-inset-bottom);justify-content:space-around}.mobile-nav button{border:0;background:transparent;color:var(--muted);font-size:10px;font-weight:750}.mobile-nav button.active{color:var(--pink-dark)}
+}
+
+/* iPad / touch optimization */
+* { -webkit-tap-highlight-color: transparent; }
+button, input, select, textarea { font: inherit; }
+button, .task-card, .nav-item, .filter-chip, .tab-btn, .icon-btn { touch-action: manipulation; }
+body { overscroll-behavior-y: none; }
+.modal { padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom)); }
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr !important; }
+  .sidebar { position: fixed; z-index: 30; inset: 0 auto 0 0; width: min(82vw, 320px); transform: translateX(-105%); transition: transform .2s ease; box-shadow: 0 10px 40px rgba(0,0,0,.12); }
+  .sidebar.open { transform: translateX(0); }
+  .main { min-width: 0; width: 100%; }
+  .mobile-bar { display:flex !important; }
+  .topbar { padding-top: 10px; }
+  .grid, .dashboard-grid { grid-template-columns: 1fr !important; }
+  .stats, .stat-grid { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+  .filters { overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:4px; }
+  .filters > * { flex: 0 0 auto; }
+  .task-card { min-height: 78px; }
+  .modal-card { width: min(96vw, 720px) !important; max-height: 92dvh; overflow:auto; }
+}
+@media (max-width: 600px) {
+  .stats, .stat-grid { grid-template-columns: 1fr 1fr !important; }
+  .form-grid { grid-template-columns: 1fr !important; }
+  .task-actions { gap: 8px; }
+  .task-actions button, .btn { min-height: 44px; }
+  input, select, textarea { min-height: 44px; font-size: 16px !important; }
+  textarea { min-height: 110px; }
+}
+@media (pointer: coarse) {
+  .btn, button { min-height: 44px; }
+  .nav-item { min-height: 48px; }
+}
+.mobile-bar { display:none; }
+
+</style>
+</head>
+<body>
+<div class="mobile-bar" style="align-items:center;gap:10px;padding:10px 14px;position:sticky;top:0;z-index:25;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid #eee;">
+  <button id="mobileMenuBtn" class="btn" type="button" style="padding:9px 12px;">☰</button>
+  <strong style="font-size:16px;">Organização acadêmica</strong>
+</div>
+
+<div class="app">
+<aside class="sidebar">
+ <div class="brand"><div class="logo">A</div><div><b>Organização Acadêmica</b><small>Seu painel de estudos</small></div></div>
+ <nav class="nav">
+  <button data-view="dashboard" class="active">⌂ &nbsp; Visão geral</button>
+  <button data-view="demandas">▣ &nbsp; Demandas</button>
+  <button data-view="leituras">▤ &nbsp; Leituras</button>
+  <button data-view="materias">◈ &nbsp; Por matéria</button>
+  <button data-view="calendario">□ &nbsp; Calendário</button>
+ </nav>
+ <div class="side-bottom">
+  <button class="btn primary" onclick="openTask()">+ Nova demanda</button>
+  <button class="btn soft" onclick="openPMO()">✦ Gerar PMO</button>
+  <button class="btn" onclick="exportData()">Backup</button>
+  <div class="note">Salvamento automático no navegador. Exporte um backup para levar suas demandas para outro dispositivo.</div>
+ </div>
+</aside>
+<main class="main">
+ <div class="top"><div><h1 id="pageTitle">Visão geral</h1><p id="pageSub">Acompanhe suas demandas, leituras e prazos.</p></div><div class="actions"><button class="btn secondary" onclick="exportData()">Exportar</button><label class="btn secondary">Importar<input hidden type="file" accept=".json" onchange="importData(event)"></label><button class="btn primary" onclick="openTask()">+ Nova demanda</button></div></div>
+ <div class="content">
+  <section id="dashboard" class="view"><div class="filters" id="fDash"></div><div class="grid4" id="stats"></div><div class="section"><div class="section-head"><h2>Esta semana</h2><span id="weekLabel"></span></div><div class="week" id="week"></div></div><div class="section"><div class="section-head"><h2>Próximos prazos</h2><span id="upCount"></span></div><div class="list" id="upcoming"></div></div></section>
+  <section id="demandas" class="view" style="display:none"><div class="filters" id="fDem"></div><div class="kanban" id="kanban"></div></section>
+  <section id="leituras" class="view" style="display:none"><div class="filters" id="fRead"></div><div class="section"><div class="section-head"><h2>Leituras</h2><span id="readCount"></span></div><div class="list" id="readings"></div></div></section>
+  <section id="materias" class="view" style="display:none"><div class="filters" id="fMat"></div><div class="section"><div class="section-head"><h2>Demandas por matéria</h2><span>Selecione uma matéria para filtrar</span></div><div class="pillbar" id="subjectPills"></div></div><div class="list" id="subjectList"></div></section>
+  <section id="calendario" class="view" style="display:none"><div class="section"><div class="calendar-head"><button class="btn" onclick="changeMonth(-1)">‹</button><h2 id="monthLabel"></h2><button class="btn" onclick="changeMonth(1)">›</button></div><div class="cal" id="cal"></div></div></section>
+ </div>
+</main>
+</div>
+<nav class="mobile-nav"><button data-view="dashboard" class="active">⌂<br>Início</button><button data-view="demandas">▣<br>Demandas</button><button data-view="leituras">▤<br>Leituras</button><button data-view="materias">◈<br>Matérias</button><button data-view="calendario">□<br>Calendário</button></nav>
+
+<div class="modal-bg" id="taskModal"><div class="modal">
+ <div class="modal-top"><div><h2 id="taskTitle">Nova demanda</h2><p style="font-size:11px;color:var(--muted)">Cadastre e acompanhe sua atividade.</p></div><button class="close" onclick="closeM('taskModal')">×</button></div>
+ <form id="taskForm" class="form" onsubmit="saveTask(event)">
+  <input type="hidden" id="id">
+  <div class="field full"><label>Nome da demanda</label><input id="title" required placeholder="Ex.: Trabalho de Teorias e abordagens"></div>
+  <div class="field"><label>Matéria</label><select id="subject"></select></div>
+  <div class="field"><label>Categoria</label><select id="category"><option value="trabalho">Trabalho</option><option value="leitura">Leitura</option><option value="prova">Prova</option><option value="outro">Outro</option></select></div>
+  <div class="field"><label>Professor / abordagem</label><select id="professor"><option value="">Não se aplica</option><option>Décio — Análise do comportamento</option><option>Juliana — Psicanálise</option><option>Talita — Psicologia analítica</option><option>Vlacir — Fenomenologia</option></select></div>
+  <div class="field"><label>Prazo</label><input id="date" type="date" required></div>
+  <div class="field"><label>Prioridade</label><select id="priority"><option value="normal">Normal</option><option value="alta">Alta densidade / dificuldade</option></select></div>
+  <div class="field"><label>Status</label><select id="status"><option value="todo">A fazer</option><option value="doing">Em andamento</option><option value="short">Prazo curto</option><option value="late">Atrasado</option><option value="review">Revisando</option><option value="done">Concluído</option></select></div>
+  <div class="field full"><label>Livro / artigo — somente para Leituras</label><input id="reading" placeholder="Nome completo do livro ou artigo"></div>
+  <div class="field full"><label>Descrição</label><textarea id="desc" placeholder="Descrição, páginas, instruções, critérios e observações..."></textarea></div>
+  <div class="modal-actions full"><button type="button" class="btn" onclick="closeM('taskModal')">Cancelar</button><button class="btn primary">Salvar</button></div>
+ </form>
+</div></div>
+
+<div class="modal-bg" id="detailModal"><div class="modal">
+ <div class="modal-top"><div><h2 id="dTitle"></h2><div id="dTags" class="meta"></div></div><button class="close" onclick="closeM('detailModal')">×</button></div><div id="dBody"></div>
+ <div class="modal-actions"><button class="btn" style="color:var(--red)" onclick="removeTask()">Excluir</button><button class="btn" onclick="editTask()">Editar</button><button class="btn primary" onclick="closeM('detailModal')">Fechar</button></div>
+</div></div>
+
+<div class="modal-bg" id="pmoModal"><div class="modal">
+ <div class="modal-top"><div><h2>Gerar PMO</h2><p style="font-size:11px;color:var(--muted)">Crie um plano de organização editável para uma atividade longa.</p></div><button class="close" onclick="closeM('pmoModal')">×</button></div>
+ <div class="form"><div class="field full"><label>Nome do projeto</label><input id="pmoName" placeholder="Ex.: Produção do vídeo"></div><div class="field"><label>Tipo</label><select id="pmoType"><option value="video">Vídeo</option><option value="trabalho">Trabalho escrito</option><option value="prova">Prova</option><option value="seminario">Seminário</option><option value="leitura">Leitura extensa</option><option value="geral">Projeto geral</option></select></div><div class="field"><label>Prazo final</label><input id="pmoDate" type="date"></div></div>
+ <div id="pmoSteps" class="steps"></div><div class="modal-actions"><button class="btn" onclick="closeM('pmoModal')">Cancelar</button><button class="btn primary" onclick="createPMO()">Criar PMO</button></div>
+</div></div>
+
+<script>
+const SUBJECTS=["Ética","Teorias e abordagens","Intervenção humanista-existencial","Intervenção cognitivo-comportamental","Estágio básico: infância e adolescência","Psicologia do envelhecimento","Atitude empreendedora","Raciocínio científico","Avaliação psicológica"];
+const PROFESSORS=["Décio — Análise do comportamento","Juliana — Psicanálise","Talita — Psicologia analítica","Vlacir — Fenomenologia"];
+const CAT={trabalho:"Trabalho",leitura:"Leitura",prova:"Prova",outro:"Outro"};
+const STAT={todo:"A fazer",doing:"Em andamento",short:"Prazo curto",late:"Atrasado",review:"Revisando",done:"Concluído"};
+const STEPS={
+ video:["Definir objetivo e público","Dividir o roteiro em blocos","Pesquisar referências","Escrever roteiro","Revisar roteiro","Planejar gravação","Gravar","Editar","Revisar vídeo final","Exportar e entregar"],
+ trabalho:["Entender o enunciado","Pesquisar referências","Definir estrutura","Escrever primeira versão","Desenvolver conteúdo","Revisar","Ajustar referências e formatação","Revisão final","Entregar"],
+ prova:["Listar conteúdos","Separar materiais","Organizar cronograma","Estudar conteúdo","Fazer questões","Revisão geral","Revisão final"],
+ seminario:["Definir conteúdo","Pesquisar referências","Organizar tópicos","Montar roteiro","Criar slides","Ensaiar","Revisar apresentação","Apresentar"],
+ leitura:["Definir capítulos/páginas","Fazer primeira leitura","Marcar conceitos importantes","Anotar ideias principais","Fazer síntese","Revisar anotações"],
+ geral:["Definir objetivo","Quebrar em etapas","Pesquisar e reunir materiais","Executar","Revisar","Finalizar","Entregar"]
+};
+const SEED_TASKS=[{"id": "seed_dever_e_poder_kant__20260914", "title": "Dever e poder (Kant)", "subject": "Ética", "category": "leitura", "date": "2026-09-14", "priority": "normal", "status": "todo", "professor": "", "reading": "KANT, I. Fundamentação da metafísica dos costumes. Tradução de Paulo Quintela. Rio de Janeiro: Edições 70, 2005.", "description": "Leitura/estudo para a aula."}, {"id": "seed_educa_o_em_direitos_humanos_20260921", "title": "Educação em Direitos Humanos", "subject": "Ética", "category": "leitura", "date": "2026-09-21", "priority": "normal", "status": "todo", "professor": "", "reading": "AGUIAR, Odílio Alves. Direitos Humanos como “direito a ter direito” em Hannah Arendt. In: Filosofia e Direitos Humanos. Fortaleza: Editora da UFC, 2006. p. 269-298.", "description": ""}, {"id": "seed_utilitarismo_stuart_mill__20260928", "title": "Utilitarismo (Stuart Mill)", "subject": "Ética", "category": "leitura", "date": "2026-09-28", "priority": "normal", "status": "todo", "professor": "", "reading": "MARCONDES, Danilo. Textos Básicos de Ética de Platão a Foucault. 3. ed. Rio de Janeiro: Jorge Zahar Editor, 2008.", "description": ""}, {"id": "seed_tde_mapa_mental_de_revis_o_20261012", "title": "TDE — Mapa mental de revisão", "subject": "Ética", "category": "trabalho", "date": "2026-10-12", "priority": "normal", "status": "todo", "professor": "", "reading": "", "description": "Mapa mental de revisão."}, {"id": "seed_avalia_o_somativa_ra1_prova_20261026", "title": "Avaliação Somativa RA1 — prova", "subject": "Ética", "category": "prova", "date": "2026-10-26", "priority": "alta", "status": "todo", "professor": "Camila Batista", "reading": "", "description": "Prova individual, presencial e sem consulta. O plano informa 50% da nota total."}, {"id": "seed_entrega_do_roteiro_do_v_deo_tde_20261102", "title": "Entrega do roteiro do vídeo — TDE", "subject": "Ética", "category": "trabalho", "date": "2026-11-02", "priority": "alta", "status": "todo", "professor": "Camila Batista", "reading": "", "description": "Roteiro do vídeo do TDE: Ética — Inteligência Artificial: bem-estar, dignidade e sustentabilidade."}, {"id": "seed_apresenta_o_dos_v_deos_tde_20261109", "title": "Apresentação dos vídeos — TDE", "subject": "Ética", "category": "trabalho", "date": "2026-11-09", "priority": "alta", "status": "todo", "professor": "Camila Batista", "reading": "", "description": "Apresentação dos vídeos em sala de aula."}, {"id": "seed_semana_do_eixo_human_stico_20261111", "title": "Semana do Eixo Humanístico", "subject": "Ética", "category": "outro", "date": "2026-11-11", "priority": "normal", "status": "todo", "professor": "Camila Batista", "reading": "", "description": "11 a 17/11 — acompanhar orientações da disciplina."}, {"id": "seed_a_cl_nica_dos_complexos_leitura_20260909", "title": "A Clínica dos complexos — leitura", "subject": "Teorias e abordagens", "category": "leitura", "date": "2026-09-09", "priority": "normal", "status": "todo", "professor": "Talita — Psicologia analítica", "reading": "STEINBERG, Warren. Aspectos clínicos da terapia junguiana. Cultrix, 1992. Cap. 7, p. 135-148.", "description": ""}, {"id": "seed_avalia_o_somativa_i_psicologia_anal_20260916", "title": "Avaliação Somativa I — Psicologia Analítica", "subject": "Teorias e abordagens", "category": "prova", "date": "2026-09-16", "priority": "alta", "status": "todo", "professor": "Talita — Psicologia analítica", "reading": "", "description": "Valor: 5,0."}, {"id": "seed_avalia_o_somativa_i_fenomenologia_20260918", "title": "Avaliação Somativa I — Fenomenologia", "subject": "Teorias e abordagens", "category": "prova", "date": "2026-09-18", "priority": "alta", "status": "todo", "professor": "Valcir — Fenomenologia", "reading": "", "description": "Somativa I — valor 0,0 a 6,0."}, {"id": "seed_tde_perguntas_norteadoras_da_psican_20260921", "title": "TDE — Perguntas norteadoras da Psicanálise", "subject": "Teorias e abordagens", "category": "trabalho", "date": "2026-09-21", "priority": "alta", "status": "todo", "professor": "Juliana — Psicanálise", "reading": "", "description": "Entrega via AVA em 21/09."}, {"id": "seed_avalia_o_somativa_i_psican_lise_20260922", "title": "Avaliação Somativa I — Psicanálise", "subject": "Teorias e abordagens", "category": "prova", "date": "2026-09-22", "priority": "alta", "status": "todo", "professor": "Juliana — Psicanálise", "reading": "", "description": "Avaliação Somativa I do eixo de Psicanálise."}, {"id": "seed_o_trabalho_com_imagens_leitura_tde_20260923", "title": "O trabalho com imagens — leitura/TDE", "subject": "Teorias e abordagens", "category": "leitura", "date": "2026-09-23", "priority": "alta", "status": "todo", "professor": "Talita — Psicologia analítica", "reading": "SILVEIRA, N. O mundo das imagens. São Paulo: Editora Ática, 1992. Cap. 5, p. 82-95.", "description": "Assistir ao documentário Imagens do Inconsciente e validar em aula."}, {"id": "seed_1_atividade_avaliativa_an_lise_do_c_20260929", "title": "1ª atividade avaliativa — Análise do Comportamento", "subject": "Teorias e abordagens", "category": "prova", "date": "2026-09-29", "priority": "alta", "status": "todo", "professor": "Décio — Análise do comportamento", "reading": "", "description": "Conteúdo: textos e conteúdos ministrados nas aulas."}, {"id": "seed_tde_roteiro_de_estudo_de_an_lise_do_20261003", "title": "TDE — Roteiro de estudo de Análise do Comportamento", "subject": "Teorias e abordagens", "category": "trabalho", "date": "2026-10-03", "priority": "alta", "status": "todo", "professor": "Décio — Análise do comportamento", "reading": "", "description": "Entrega via AVA. O roteiro vem sendo trabalhado nas aulas do eixo."}, {"id": "seed_lacan_v_deo_20261006", "title": "Lacan — vídeo", "subject": "Teorias e abordagens", "category": "leitura", "date": "2026-10-06", "priority": "normal", "status": "todo", "professor": "Juliana — Psicanálise", "reading": "Vídeo: Um encontro com Lacan.", "description": "Assistir ao vídeo indicado no plano."}, {"id": "seed_a_pr_tica_da_psicoterapia_leitura_20261007", "title": "A Prática da Psicoterapia — leitura", "subject": "Teorias e abordagens", "category": "leitura", "date": "2026-10-07", "priority": "normal", "status": "todo", "professor": "Talita — Psicologia analítica", "reading": "JUNG, C. G. A Prática da Psicoterapia. 16. ed. Petrópolis: Vozes, 2013. Obras Completas, v. 16/1. Cap. 1 e 5.", "description": ""}, {"id": "seed_fundamentos_do_psicodrama_leitura_20261009", "title": "Fundamentos do psicodrama — leitura", "subject": "Teorias e abordagens", "category": "leitura", "date": "2026-10-09", "priority": "normal", "status": "todo", "professor": "Valcir — Fenomenologia", "reading": "MORENO, J. L.; MORENO, Z. T. Fundamentos do psicodrama. São Paulo: Ágora, 2014.", "description": ""}, {"id": "seed_2_avalia_o_an_lise_do_comportamento_20261117", "title": "2ª avaliação — Análise do Comportamento", "subject": "Teorias e abordagens", "category": "prova", "date": "2026-11-17", "priority": "alta", "status": "todo", "professor": "Décio — Análise do comportamento", "reading": "", "description": "Avaliação II. Textos e conteúdos ministrados nas aulas."}, {"id": "seed_avalia_o_somativa_ii_psican_lise_20261117", "title": "Avaliação Somativa II — Psicanálise", "subject": "Teorias e abordagens", "category": "prova", "date": "2026-11-17", "priority": "alta", "status": "todo", "professor": "Juliana — Psicanálise", "reading": "", "description": "TDE — perguntas norteadoras com entrega em 16/11."}, {"id": "seed_avalia_o_somativa_ii_psicologia_ana_20261118", "title": "Avaliação Somativa II — Psicologia Analítica", "subject": "Teorias e abordagens", "category": "prova", "date": "2026-11-18", "priority": "alta", "status": "todo", "professor": "Talita — Psicologia analítica", "reading": "", "description": "Valor: 5,0."}, {"id": "seed_avalia_o_somativa_ii_fenomenologia_20261113", "title": "Avaliação Somativa II — Fenomenologia", "subject": "Teorias e abordagens", "category": "prova", "date": "2026-11-13", "priority": "alta", "status": "todo", "professor": "Valcir — Fenomenologia", "reading": "", "description": "Somativa II — valor 0,0 a 4,0."}, {"id": "seed_2_reflex_o_sobre_texto_20260911", "title": "2ª reflexão sobre texto", "subject": "Intervenção humanista-existencial", "category": "trabalho", "date": "2026-09-11", "priority": "alta", "status": "todo", "professor": "Paulo Eduardo Lopes da Silva", "reading": "", "description": "Entrega da 2ª reflexão sobre texto. As horas de TDE são direcionadas às leituras."}, {"id": "seed_anal_tica_do_dasein_estudo_20260911", "title": "Analítica do Dasein — estudo", "subject": "Intervenção humanista-existencial", "category": "leitura", "date": "2026-09-11", "priority": "normal", "status": "todo", "professor": "Paulo Eduardo Lopes da Silva", "reading": "DASTUR, F. O que é Daseinsanalyse. Covilhã: Universidade da Beira Interior, 2005.", "description": ""}, {"id": "seed_a_po_tica_n_o_deontol_gica_da_an_li_20260918", "title": "A (po)ética não-deontológica da Análise Existencial", "subject": "Intervenção humanista-existencial", "category": "leitura", "date": "2026-09-18", "priority": "normal", "status": "todo", "professor": "Paulo Eduardo Lopes da Silva", "reading": "SILVA, P. E. L. Frente aos Espelhos Planos do Ser: Heidegger e a (po)ética não-deontológica da Daseinsanalyse. Tese de Doutorado. Curitiba: PUC, 2025.", "description": ""}, {"id": "seed_daseinsanalyse_e_o_ser_crian_a_3_re_20261002", "title": "Daseinsanalyse e o ser-criança — 3ª reflexão", "subject": "Intervenção humanista-existencial", "category": "trabalho", "date": "2026-10-02", "priority": "alta", "status": "todo", "professor": "Paulo Eduardo Lopes da Silva", "reading": "", "description": "Entrega da 3ª reflexão sobre texto."}, {"id": "seed_daseinsanalyse_e_sofrimento_existen_20261016", "title": "Daseinsanalyse e sofrimento existencial — leitura", "subject": "Intervenção humanista-existencial", "category": "leitura", "date": "2026-10-16", "priority": "normal", "status": "todo", "professor": "Paulo Eduardo Lopes da Silva", "reading": "COSTA, B. A. Sofrimento e Existência: uma leitura daseinsanalítica. Revista Latinoamericana de Psicoterapia Existencial, n. 14, 2017.", "description": ""}, {"id": "seed_4_reflex_o_sobre_texto_20261023", "title": "4ª reflexão sobre texto", "subject": "Intervenção humanista-existencial", "category": "trabalho", "date": "2026-10-23", "priority": "alta", "status": "todo", "professor": "Paulo Eduardo Lopes da Silva", "reading": "", "description": "Entrega da 4ª reflexão sobre texto."}, {"id": "seed_daseinsanalyse_e_an_lise_de_sonhos__20261030", "title": "Daseinsanalyse e análise de sonhos — leitura", "subject": "Intervenção humanista-existencial", "category": "leitura", "date": "2026-10-30", "priority": "normal", "status": "todo", "professor": "Paulo Eduardo Lopes da Silva", "reading": "BOSS, M. Na noite passada eu sonhei... São Paulo: Summus, 1979.", "description": ""}, {"id": "seed_5_reflex_o_sobre_texto_20261113", "title": "5ª reflexão sobre texto", "subject": "Intervenção humanista-existencial", "category": "trabalho", "date": "2026-11-13", "priority": "alta", "status": "todo", "professor": "Paulo Eduardo Lopes da Silva", "reading": "", "description": "Entrega da 5ª reflexão sobre texto."}, {"id": "seed_avalia_o_e_formula_o_de_caso_leitur_20260909", "title": "Avaliação e formulação de caso — leitura", "subject": "Intervenção cognitivo-comportamental", "category": "leitura", "date": "2026-09-09", "priority": "normal", "status": "todo", "professor": "Patricia Guillon Ribeiro", "reading": "WRIGHT, Jesse H.; BROWN, Gregory K.; THASE, Michael E.; BASCO, Monica Ramirez. Aprendendo a terapia cognitivo-comportamental: um guia ilustrado. 2. ed. Porto Alegre: Artmed, 2018. Cap. 3.", "description": ""}, {"id": "seed_tde_estudo_de_caso_1_20260916", "title": "TDE — Estudo de caso 1", "subject": "Intervenção cognitivo-comportamental", "category": "trabalho", "date": "2026-09-16", "priority": "alta", "status": "todo", "professor": "Patricia Guillon Ribeiro", "reading": "", "description": "Estudo de caso (1,0). Entrega pelo Canva."}, {"id": "seed_pensamentos_autom_ticos_leitura_20260923", "title": "Pensamentos automáticos — leitura", "subject": "Intervenção cognitivo-comportamental", "category": "leitura", "date": "2026-09-23", "priority": "normal", "status": "todo", "professor": "Patricia Guillon Ribeiro", "reading": "WRIGHT, Jesse H.; BROWN, Gregory K.; THASE, Michael E.; BASCO, Monica Ramirez. Aprendendo a terapia cognitivo-comportamental: um guia ilustrado. 2. ed. Porto Alegre: Artmed, 2018. Cap. 5.", "description": ""}, {"id": "seed_1_avalia_o_somativa_tcc_20260930", "title": "1ª avaliação somativa — TCC", "subject": "Intervenção cognitivo-comportamental", "category": "prova", "date": "2026-09-30", "priority": "alta", "status": "todo", "professor": "Patricia Guillon Ribeiro", "reading": "", "description": "Avaliação individual e objetiva com base em caso clínico. Valor: 4,0."}, {"id": "seed_questionamento_socr_tico_leitura_20261007", "title": "Questionamento socrático — leitura", "subject": "Intervenção cognitivo-comportamental", "category": "leitura", "date": "2026-10-07", "priority": "normal", "status": "todo", "professor": "Patricia Guillon Ribeiro", "reading": "WALTMAN, Scott H.; CODD III, R. Trent; McFARR, Lynn M.; MOORE, Bret A. Questionamento socrático para terapeutas. Porto Alegre: Artmed, 2024. Cap. 1 e 4.", "description": ""}, {"id": "seed_tde_estudo_de_caso_2_20261104", "title": "TDE — Estudo de caso 2", "subject": "Intervenção cognitivo-comportamental", "category": "trabalho", "date": "2026-11-04", "priority": "alta", "status": "todo", "professor": "Patricia Guillon Ribeiro", "reading": "", "description": "Estudo de caso 2 (1,0). Entrega pelo Canva."}, {"id": "seed_tcc_aplicada_a_crises_leitura_20261021", "title": "TCC aplicada a crises — leitura", "subject": "Intervenção cognitivo-comportamental", "category": "leitura", "date": "2026-10-21", "priority": "normal", "status": "todo", "professor": "Patricia Guillon Ribeiro", "reading": "DATTILIO, Frank M.; SHAPIRO, Daniel I.; GREENAWAY, D. Scott (org.). Estratégias cognitivo-comportamentais de intervenção em situações de crise. 4. ed. Porto Alegre: Artmed, 2025. Cap. 1.", "description": ""}, {"id": "seed_tcc_aplicada_depress_o_leitura_20261028", "title": "TCC aplicada à Depressão — leitura", "subject": "Intervenção cognitivo-comportamental", "category": "leitura", "date": "2026-10-28", "priority": "normal", "status": "todo", "professor": "Patricia Guillon Ribeiro", "reading": "OLIVEIRA, Margareth da Silva; ANDRETTA, Ilana (org.). Manual prático de terapia cognitivo-comportamental. São Paulo: Casa do Psicólogo, 2011. Cap. 14.", "description": ""}, {"id": "seed_2_avalia_o_avaliativa_tcc_20261111", "title": "2ª avaliação avaliativa — TCC", "subject": "Intervenção cognitivo-comportamental", "category": "prova", "date": "2026-11-11", "priority": "alta", "status": "todo", "professor": "Patricia Guillon Ribeiro", "reading": "", "description": "2ª avaliação avaliativa. Valor: 4,0."}, {"id": "seed_2_supervis_o_relat_rio_1_20260915", "title": "2ª supervisão — Relatório 1", "subject": "Estágio básico: infância e adolescência", "category": "trabalho", "date": "2026-09-15", "priority": "alta", "status": "todo", "professor": "Jéssica Caroline dos Santos / Wallisten Passos Garcia", "reading": "", "description": "Supervisão-prática e elaboração do Relatório 1."}, {"id": "seed_relat_rio_1_entrega_20260922", "title": "Relatório 1 — entrega", "subject": "Estágio básico: infância e adolescência", "category": "trabalho", "date": "2026-09-22", "priority": "alta", "status": "todo", "professor": "Jéssica Caroline dos Santos / Wallisten Passos Garcia", "reading": "", "description": "Relatório 1. Peso 1,5."}, {"id": "seed_3_supervis_o_observa_o_2_20260922", "title": "3ª supervisão — Observação 2", "subject": "Estágio básico: infância e adolescência", "category": "outro", "date": "2026-09-22", "priority": "alta", "status": "todo", "professor": "Jéssica Caroline dos Santos / Wallisten Passos Garcia", "reading": "", "description": "Observação 2 — supervisão prática."}, {"id": "seed_4_supervis_o_relat_rio_2_20260929", "title": "4ª supervisão — Relatório 2", "subject": "Estágio básico: infância e adolescência", "category": "trabalho", "date": "2026-09-29", "priority": "alta", "status": "todo", "professor": "Jéssica Caroline dos Santos / Wallisten Passos Garcia", "reading": "", "description": "Relatório 2 — supervisão prática."}, {"id": "seed_5_supervis_o_observa_o_3_20261006", "title": "5ª supervisão — Observação 3", "subject": "Estágio básico: infância e adolescência", "category": "outro", "date": "2026-10-06", "priority": "alta", "status": "todo", "professor": "Jéssica Caroline dos Santos / Wallisten Passos Garcia", "reading": "", "description": "Observação 3 — supervisão prática."}, {"id": "seed_relat_rio_2_entrega_20261006", "title": "Relatório 2 — entrega", "subject": "Estágio básico: infância e adolescência", "category": "trabalho", "date": "2026-10-06", "priority": "alta", "status": "todo", "professor": "Jéssica Caroline dos Santos / Wallisten Passos Garcia", "reading": "", "description": "Relatório 2. Peso 1,5."}, {"id": "seed_6_supervis_o_relat_rio_3_20261020", "title": "6ª supervisão — Relatório 3", "subject": "Estágio básico: infância e adolescência", "category": "trabalho", "date": "2026-10-20", "priority": "alta", "status": "todo", "professor": "Jéssica Caroline dos Santos / Wallisten Passos Garcia", "reading": "", "description": "Relatório 3 — supervisão prática."}, {"id": "seed_7_supervis_o_observa_o_4_20261027", "title": "7ª supervisão — Observação 4", "subject": "Estágio básico: infância e adolescência", "category": "outro", "date": "2026-10-27", "priority": "alta", "status": "todo", "professor": "Jéssica Caroline dos Santos / Wallisten Passos Garcia", "reading": "", "description": "Observação 4; feedback do relatório 3 e recuperação."}, {"id": "seed_relat_rio_3_entrega_20261027", "title": "Relatório 3 — entrega", "subject": "Estágio básico: infância e adolescência", "category": "trabalho", "date": "2026-10-27", "priority": "alta", "status": "todo", "professor": "Jéssica Caroline dos Santos / Wallisten Passos Garcia", "reading": "", "description": "Relatório 3. Peso 1,5."}, {"id": "seed_8_supervis_o_relat_rio_4_20261103", "title": "8ª supervisão — Relatório 4", "subject": "Estágio básico: infância e adolescência", "category": "trabalho", "date": "2026-11-03", "priority": "alta", "status": "todo", "professor": "Jéssica Caroline dos Santos / Wallisten Passos Garcia", "reading": "", "description": "Relatório 4 — supervisão prática."}, {"id": "seed_relat_rio_final_semin_rio_pesquisa__20261110", "title": "Relatório final + Seminário — Pesquisa Complementar", "subject": "Estágio básico: infância e adolescência", "category": "trabalho", "date": "2026-11-10", "priority": "alta", "status": "todo", "professor": "Jéssica Caroline dos Santos / Wallisten Passos Garcia", "reading": "", "description": "Entrega do relatório final e pesquisa complementar."}, {"id": "seed_semin_rio_pesquisa_complementar_20261117", "title": "Seminário — Pesquisa Complementar", "subject": "Estágio básico: infância e adolescência", "category": "trabalho", "date": "2026-11-17", "priority": "alta", "status": "todo", "professor": "Jéssica Caroline dos Santos / Wallisten Passos Garcia", "reading": "", "description": "Apresentação do seminário; recuperação e 2ª chamada conforme cronograma."}, {"id": "seed_capacidade_de_amar_alteridade_conju_20260911", "title": "Capacidade de amar — alteridade, conjugalidade e parentalidade", "subject": "Psicologia do envelhecimento", "category": "outro", "date": "2026-09-11", "priority": "normal", "status": "todo", "professor": "Flávia Maria de Paula Soares", "reading": "", "description": ""}, {"id": "seed_meia_idade_climat_rio_menopausa_e_a_20260914", "title": "Meia-idade — climatério, menopausa e andropausa", "subject": "Psicologia do envelhecimento", "category": "outro", "date": "2026-09-14", "priority": "normal", "status": "todo", "professor": "Flávia Maria de Paula Soares", "reading": "", "description": "Conceitos fundamentais e efeitos psicológicos."}, {"id": "seed_erik_erikson_leitura_20260918", "title": "Erik Erikson — leitura", "subject": "Psicologia do envelhecimento", "category": "leitura", "date": "2026-09-18", "priority": "normal", "status": "todo", "professor": "Flávia Maria de Paula Soares", "reading": "VERÍSSIMO, R. Desenvolvimento psicossocial (Erik Erikson). Porto: Faculdade de Medicina, 2002.", "description": ""}, {"id": "seed_psican_lise_contempor_nea_leitura_20260921", "title": "Psicanálise contemporânea — leitura", "subject": "Psicologia do envelhecimento", "category": "leitura", "date": "2026-09-21", "priority": "normal", "status": "todo", "professor": "Flávia Maria de Paula Soares", "reading": "LASNIK, M-C. Sexualidade feminina e menopausa. Associação Psicanalítica em Revista, ano V, n. 5, 2001. / GROMANN, R. M. G. A política do erotismo na maturidade feminina. Revista Latino-americana de Psicopatologia Fundamental, XI(2), 203-218.", "description": ""}, {"id": "seed_prova_1_adultez_emergente_e_idade_a_20260928", "title": "Prova 1 — Adultez emergente e idade adulta", "subject": "Psicologia do envelhecimento", "category": "prova", "date": "2026-09-28", "priority": "alta", "status": "todo", "professor": "Flávia Maria de Paula Soares", "reading": "", "description": "Avaliação somativa 1. Valor: 2,5."}, {"id": "seed_estudo_de_caso_meia_idade_20261002", "title": "Estudo de caso — Meia-idade", "subject": "Psicologia do envelhecimento", "category": "trabalho", "date": "2026-10-02", "priority": "alta", "status": "todo", "professor": "Flávia Maria de Paula Soares", "reading": "", "description": "Estudo de caso em sala de aula sobre meia-idade. Valor: 2,5."}, {"id": "seed_traumas_na_velhice_leitura_20261009", "title": "Traumas na velhice — leitura", "subject": "Psicologia do envelhecimento", "category": "leitura", "date": "2026-10-09", "priority": "normal", "status": "todo", "professor": "Flávia Maria de Paula Soares", "reading": "JERUSALINSKY, A. Psicologia do envelhecimento. Associação Psicanalítica de Curitiba em Revista — Envelhecimento: uma perspectiva psicanalítica, ano V, n. 5, p. 11-26, 2001.", "description": ""}, {"id": "seed_velhice_teorias_organicistas_20261019", "title": "Velhice — teorias organicistas", "subject": "Psicologia do envelhecimento", "category": "leitura", "date": "2026-10-19", "priority": "normal", "status": "todo", "professor": "Flávia Maria de Paula Soares", "reading": "SOARES, F. M. P. A conquista da “capacidade de morrer”: o amadurecimento pessoal na velhice a partir da psicanálise winnicottiana. Tese de doutorado, PUCPR, 2021. Cap. 1.", "description": ""}, {"id": "seed_teoria_lifespan_leitura_20261026", "title": "Teoria Lifespan — leitura", "subject": "Psicologia do envelhecimento", "category": "leitura", "date": "2026-10-26", "priority": "normal", "status": "todo", "professor": "Flávia Maria de Paula Soares", "reading": "NERI, A. L. O legado de Paul B. Baltes à Psicologia do desenvolvimento e do envelhecimento. Temas em Psicologia, 2006, v. 14, n. 1, p. 17-34.", "description": ""}, {"id": "seed_seletividade_socioemocional_leitura_20261102", "title": "Seletividade socioemocional — leitura", "subject": "Psicologia do envelhecimento", "category": "leitura", "date": "2026-11-02", "priority": "normal", "status": "todo", "professor": "Flávia Maria de Paula Soares", "reading": "Texto indicado no plano de ensino; fonte NIH.", "description": ""}, {"id": "seed_teorias_psicanal_ticas_sobre_a_velh_20261106", "title": "Teorias psicanalíticas sobre a velhice — leituras", "subject": "Psicologia do envelhecimento", "category": "leitura", "date": "2026-11-06", "priority": "normal", "status": "todo", "professor": "Flávia Maria de Paula Soares", "reading": "SOARES, F. M. P. Envelhescência: o trabalho psíquico na velhice. Curitiba: Appris, 2020. / BERLINCK, M. T. Envelhescência. In: Psicopatologia fundamental. 2002. / FREUD, S. O método psicanalítico de Freud. ESB, v. 7. / DIAS, E. O. A teoria do amadurecimento de D. W. Winnicott. 2012, p. 282-286.", "description": ""}, {"id": "seed_prova_2_velhice_20261109", "title": "Prova 2 — Velhice", "subject": "Psicologia do envelhecimento", "category": "prova", "date": "2026-11-09", "priority": "alta", "status": "todo", "professor": "Flávia Maria de Paula Soares", "reading": "", "description": "Avaliação somativa 2. Valor: 2,5."}, {"id": "seed_tde_extens_o_a_o_intergeracional_co_20261113", "title": "TDE/Extensão — Ação intergeracional contra o etarismo", "subject": "Psicologia do envelhecimento", "category": "trabalho", "date": "2026-11-13", "priority": "alta", "status": "todo", "professor": "Flávia Maria de Paula Soares", "reading": "", "description": "VIII Ação Intergeracional contra o etarismo. Participação, criação/organização e execução conforme a tarefa do grupo."}, {"id": "seed_finaliza_o_das_apresenta_es_dos_per_20260910", "title": "Finalização das apresentações dos perfis — TDE 1", "subject": "Atitude empreendedora", "category": "trabalho", "date": "2026-09-10", "priority": "alta", "status": "todo", "professor": "Tânia Cristina Silva Barbieri", "reading": "", "description": "Finalização e apresentação dos perfis escolhidos — TDE 1."}, {"id": "seed_2_ideias_de_neg_cio_20260924", "title": "2 ideias de negócio", "subject": "Atitude empreendedora", "category": "trabalho", "date": "2026-09-24", "priority": "alta", "status": "todo", "professor": "Tânia Cristina Silva Barbieri", "reading": "", "description": "Cada estudante deverá apresentar 2 ideias de negócio dentro da área escolhida pelo grupo."}, {"id": "seed_tde_2_pesquisa_de_mercado_20261008", "title": "TDE 2 — Pesquisa de mercado", "subject": "Atitude empreendedora", "category": "trabalho", "date": "2026-10-08", "priority": "alta", "status": "todo", "professor": "Tânia Cristina Silva Barbieri", "reading": "", "description": "Pesquisa de mercado: nicho, público-alvo, questionário, coleta e organização das informações. Entrega do formulário."}, {"id": "seed_apresenta_o_e_postagem_da_pesquisa__20261022", "title": "Apresentação e postagem da pesquisa de mercado", "subject": "Atitude empreendedora", "category": "trabalho", "date": "2026-10-22", "priority": "alta", "status": "todo", "professor": "Tânia Cristina Silva Barbieri", "reading": "", "description": "Apresentação e postagem da pesquisa de mercado. Valor 2,0."}, {"id": "seed_tde_3_projeto_empreendedor_apresent_20261105", "title": "TDE 3 — Projeto Empreendedor / apresentação", "subject": "Atitude empreendedora", "category": "trabalho", "date": "2026-11-05", "priority": "alta", "status": "todo", "professor": "Tânia Cristina Silva Barbieri", "reading": "", "description": "Estruturação e organização da apresentação do projeto empreendedor."}, {"id": "seed_apresenta_o_do_projeto_empreendedor_20261112", "title": "Apresentação do Projeto Empreendedor — Pitch", "subject": "Atitude empreendedora", "category": "trabalho", "date": "2026-11-12", "priority": "alta", "status": "todo", "professor": "Tânia Cristina Silva Barbieri", "reading": "", "description": "Apresentação do projeto empreendedor no modelo Pitch. Valor 3,0."}, {"id": "seed_apresenta_o_do_projeto_empreendedor_20261119", "title": "Apresentação do Projeto Empreendedor — Pitch (continuação)", "subject": "Atitude empreendedora", "category": "trabalho", "date": "2026-11-19", "priority": "alta", "status": "todo", "professor": "Tânia Cristina Silva Barbieri", "reading": "", "description": "Continuação das apresentações."}, {"id": "seed_m_todo_hipot_tico_dedutivo_e_formul_20260914", "title": "Método Hipotético-Dedutivo e formulação de hipóteses", "subject": "Raciocínio científico", "category": "outro", "date": "2026-09-14", "priority": "normal", "status": "todo", "professor": "Humberto Maciel França Madeira", "reading": "", "description": ""}, {"id": "seed_defini_o_das_hip_teses_do_pr_projet_20260921", "title": "Definição das hipóteses do pré-projeto", "subject": "Raciocínio científico", "category": "trabalho", "date": "2026-09-21", "priority": "alta", "status": "todo", "professor": "Humberto Maciel França Madeira", "reading": "", "description": "Atividade em equipe: definição da(s) hipótese(s) do pré-projeto."}, {"id": "seed_prova_1_avalia_o_somativa_20260928", "title": "Prova 1 — Avaliação Somativa", "subject": "Raciocínio científico", "category": "prova", "date": "2026-09-28", "priority": "alta", "status": "todo", "professor": "Humberto Maciel França Madeira", "reading": "", "description": "Prova escrita individual. Peso 3."}, {"id": "seed_sele_o_de_artigos_para_o_referencia_20261019", "title": "Seleção de artigos para o referencial teórico", "subject": "Raciocínio científico", "category": "trabalho", "date": "2026-10-19", "priority": "alta", "status": "todo", "professor": "Humberto Maciel França Madeira", "reading": "", "description": "Atividade em equipe: seleção de artigos para elaboração do referencial teórico."}, {"id": "seed_tde_busca_de_artigos_em_bases_de_da_20261026", "title": "TDE — Busca de artigos em bases de dados", "subject": "Raciocínio científico", "category": "trabalho", "date": "2026-10-26", "priority": "alta", "status": "todo", "professor": "Humberto Maciel França Madeira", "reading": "", "description": "Entrega do TDE — busca de artigos em bases de dados. Peso 2."}, {"id": "seed_desenvolvimento_das_partes_iniciais_20261026", "title": "Desenvolvimento das partes iniciais do pré-projeto", "subject": "Raciocínio científico", "category": "trabalho", "date": "2026-10-26", "priority": "alta", "status": "todo", "professor": "Humberto Maciel França Madeira", "reading": "", "description": ""}, {"id": "seed_finaliza_o_das_partes_iniciais_do_p_20261109", "title": "Finalização das partes iniciais do pré-projeto", "subject": "Raciocínio científico", "category": "trabalho", "date": "2026-11-09", "priority": "alta", "status": "todo", "professor": "Humberto Maciel França Madeira", "reading": "", "description": ""}, {"id": "seed_entrega_do_pr_projeto_de_pesquisa_20261116", "title": "Entrega do Pré-Projeto de Pesquisa", "subject": "Raciocínio científico", "category": "trabalho", "date": "2026-11-16", "priority": "alta", "status": "todo", "professor": "Humberto Maciel França Madeira", "reading": "", "description": "Entrega em equipes. Peso 3."}, {"id": "seed_prova_2_avalia_o_somativa_20261116", "title": "Prova 2 — Avaliação Somativa", "subject": "Raciocínio científico", "category": "prova", "date": "2026-11-16", "priority": "alta", "status": "todo", "professor": "Humberto Maciel França Madeira", "reading": "", "description": "Prova escrita individual. Peso 2."}, {"id": "seed_din_mica_sobre_o_pensamento_integra_20260909", "title": "Dinâmica sobre o Pensamento Integrativo", "subject": "Avaliação psicológica", "category": "outro", "date": "2026-09-09", "priority": "normal", "status": "todo", "professor": "Cassia Aparecida Rodrigues", "reading": "", "description": ""}, {"id": "seed_avalia_o_somativa_1_texto_integrado_20260916", "title": "Avaliação Somativa 1 — texto integrador individual", "subject": "Avaliação psicológica", "category": "trabalho", "date": "2026-09-16", "priority": "alta", "status": "todo", "professor": "Cassia Aparecida Rodrigues", "reading": "", "description": "Elaboração individual de texto integrador dos conteúdos trabalhados. Valor 1,0."}, {"id": "seed_avalia_o_somativa_1_texto_integrado_20260917", "title": "Avaliação Somativa 1 — texto integrador em equipe", "subject": "Avaliação psicológica", "category": "trabalho", "date": "2026-09-17", "priority": "alta", "status": "todo", "professor": "Cassia Aparecida Rodrigues", "reading": "", "description": "Continuação: elaboração em equipe do texto integrador. Valor 1,0."}, {"id": "seed_processo_de_conhecer_em_avalia_o_ps_20260923", "title": "Processo de conhecer em Avaliação Psicológica — leitura", "subject": "Avaliação psicológica", "category": "leitura", "date": "2026-09-23", "priority": "normal", "status": "todo", "professor": "Cassia Aparecida Rodrigues", "reading": "CRUZ, Roberto Moraes. O processo de conhecer em avaliação psicológica. In: Avaliação e medidas psicológicas. 2004. p. 15-24.", "description": ""}, {"id": "seed_compet_ncias_profissionais_leitura_20260924", "title": "Competências profissionais — leitura", "subject": "Avaliação psicológica", "category": "leitura", "date": "2026-09-24", "priority": "normal", "status": "todo", "professor": "Cassia Aparecida Rodrigues", "reading": "LINS, Manuela Ramos Caldas; BORSA, Juliane Callegaro (org.). Avaliação psicológica: aspectos teóricos e práticos. Petrópolis: Vozes, 2017. Cap. 7.", "description": ""}, {"id": "seed_atividade_somativa_2_20261008", "title": "Atividade Somativa 2", "subject": "Avaliação psicológica", "category": "trabalho", "date": "2026-10-08", "priority": "alta", "status": "todo", "professor": "Cassia Aparecida Rodrigues", "reading": "", "description": "Atividade Somativa 2. Peso 5,0."}, {"id": "seed_pesquisa_do_tde_3_contextos_avaliat_20261028", "title": "Pesquisa do TDE 3 — contextos avaliativos", "subject": "Avaliação psicológica", "category": "trabalho", "date": "2026-10-28", "priority": "alta", "status": "todo", "professor": "Cassia Aparecida Rodrigues", "reading": "", "description": "Apresentação da pesquisa realizada referente ao TDE 3."}, {"id": "seed_documentos_na_avalia_o_psicol_gica__20261104", "title": "Documentos na Avaliação Psicológica — Resolução CFP nº 06/2019", "subject": "Avaliação psicológica", "category": "leitura", "date": "2026-11-04", "priority": "normal", "status": "todo", "professor": "Cassia Aparecida Rodrigues", "reading": "Resolução CFP nº 06/2019.", "description": "Leitura indicada para a aula sobre documentos na Avaliação Psicológica."}, {"id": "seed_entrevista_devolutiva_leitura_20261111", "title": "Entrevista devolutiva — leitura", "subject": "Avaliação psicológica", "category": "leitura", "date": "2026-11-11", "priority": "normal", "status": "todo", "professor": "Cassia Aparecida Rodrigues", "reading": "LINS, Manuela Ramos Caldas; MUNIZ, Monalisa; CARDOSO, Lucila Moraes (orgs.). Avaliação psicológica infantil. São Paulo: Hogrefe, 2018. Cap. 14.", "description": ""}, {"id": "seed_atividade_avaliativa_3_constru_o_e__20261119", "title": "Atividade Avaliativa 3 — construção e execução", "subject": "Avaliação psicológica", "category": "trabalho", "date": "2026-11-19", "priority": "alta", "status": "todo", "professor": "Cassia Aparecida Rodrigues", "reading": "", "description": "Construção, execução e entrega da Atividade Avaliativa 3."}];
+let db;
+try{db=JSON.parse(localStorage.getItem("organizacaoAcademicaFinal"))||null}catch(e){db=null}
+if(!db || !Array.isArray(db.tasks) || db.tasks.length===0){
+ db={tasks:SEED_TASKS,pmos:[]};
+ localStorage.setItem("organizacaoAcademicaFinal",JSON.stringify(db));
+}
+if(!Array.isArray(db.tasks))db.tasks=[];
+if(!Array.isArray(db.pmos))db.pmos=[];
+let current=null, view="dashboard", filter={period:"all",subject:"all",category:"all",priority:"all"}, month=new Date(new Date().getFullYear(),new Date().getMonth(),1);
+
+function save(){localStorage.setItem("organizacaoAcademicaFinal",JSON.stringify(db));}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function dateKey(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
+function dt(s){return new Date(s+"T12:00:00")}
+function fmt(s){return dt(s).toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric"})}
+function monday(d){let x=new Date(d);let n=x.getDay();x.setDate(x.getDate()+(n===0?-6:1-n));x.setHours(12);return x}
+function isThisWeek(s){let a=monday(new Date()),b=new Date(a);b.setDate(b.getDate()+6);let x=dt(s);return x>=a&&x<=b}
+function filtered(){
+ let now=new Date();now.setHours(12,0,0,0);
+ return db.tasks.filter(t=>{
+  if(filter.subject!=="all"&&t.subject!==filter.subject)return false;
+  if(filter.category!=="all"&&t.category!==filter.category)return false;
+  if(filter.priority!=="all"&&t.priority!==filter.priority)return false;
+  let x=dt(t.date);
+  if(filter.period==="week"&&!isThisWeek(t.date))return false;
+  if(filter.period==="month"&&(x.getMonth()!==now.getMonth()||x.getFullYear()!==now.getFullYear()))return false;
+  if(filter.period==="7"){let e=new Date(now);e.setDate(e.getDate()+7);if(x<now||x>e)return false}
+  if(filter.period==="30"){let e=new Date(now);e.setDate(e.getDate()+30);if(x<now||x>e)return false}
+  return true;
+ })
+}
+function filters(target){
+ target.innerHTML=`<select onchange="filter.period=this.value;render()"><option value="all">Todos os períodos</option><option value="week" ${filter.period==="week"?"selected":""}>Esta semana</option><option value="month" ${filter.period==="month"?"selected":""}>Este mês</option><option value="7" ${filter.period==="7"?"selected":""}>Próximos 7 dias</option><option value="30" ${filter.period==="30"?"selected":""}>Próximos 30 dias</option></select>
+ <select onchange="filter.subject=this.value;render()"><option value="all">Todas as matérias</option>${SUBJECTS.map(s=>`<option value="${esc(s)}" ${filter.subject===s?"selected":""}>${esc(s)}</option>`).join("")}</select>
+ <select onchange="filter.category=this.value;render()"><option value="all">Todas as categorias</option>${Object.entries(CAT).map(([k,v])=>`<option value="${k}" ${filter.category===k?"selected":""}>${v}</option>`).join("")}</select>
+ <select onchange="filter.priority=this.value;render()"><option value="all">Todas as prioridades</option><option value="alta" ${filter.priority==="alta"?"selected":""}>Alta densidade</option><option value="normal" ${filter.priority==="normal"?"selected":""}>Normal</option></select><button class="btn soft" onclick="clearFilters()">Limpar filtros</button>`;
+}
+function clearFilters(){filter={period:"all",subject:"all",category:"all",priority:"all"};render()}
+function render(){
+ ["fDash","fDem","fRead","fMat"].forEach(id=>filters(document.getElementById(id)));
+ let a=filtered(),done=a.filter(t=>t.status==="done").length,late=a.filter(t=>t.status==="late"|| (t.status!=="done"&&t.date<dateKey(new Date()))).length,high=a.filter(t=>t.priority==="alta"&&t.status!=="done").length;
+ document.getElementById("stats").innerHTML=`<div class="stat">Demandas<strong>${a.length}</strong><small>no período selecionado</small></div><div class="stat">Concluídas<strong>${done}</strong><small>${a.length?Math.round(done/a.length*100):0}% do total</small></div><div class="stat">Atenção<strong>${late}</strong><small>atrasadas ou com prazo vencido</small></div><div class="stat">Alta densidade<strong>${high}</strong><small>prioridade laranja</small></div>`;
+ renderWeek();renderUpcoming();renderKanban();renderReadings();renderSubjects();renderCalendar();
+}
+function renderWeek(){
+ let start=monday(new Date()),end=new Date(start);end.setDate(end.getDate()+6);
+ document.getElementById("weekLabel").textContent=start.toLocaleDateString("pt-BR",{day:"2-digit",month:"short"})+" – "+end.toLocaleDateString("pt-BR",{day:"2-digit",month:"short"});
+ let names=["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"],h="";
+ for(let i=0;i<7;i++){let d=new Date(start);d.setDate(d.getDate()+i),key=dateKey(d),ts=db.tasks.filter(t=>t.date===key);h+=`<div class="day ${key===dateKey(new Date())?"today":""}"><div class="day-head"><b>${names[i]}</b><span>${d.getDate()}/${d.getMonth()+1}</span></div>${ts.length?ts.map(mini).join(""):"<div style='font-size:10px;color:#aaa'>Sem demandas</div>"}</div>`}
+ document.getElementById("week").innerHTML=h;
+}
+function mini(t){return `<div class="mini ${t.priority==="alta"?"high":""} ${t.status==="done"?"done":""}" onclick="detail('${t.id}')"><b>${esc(t.title)}</b><small>${esc(t.subject)} · ${CAT[t.category]}</small></div>`}
+function renderUpcoming(){
+ let today=dateKey(new Date()),a=db.tasks.filter(t=>t.status!=="done"&&t.date>=today).sort((x,y)=>x.date.localeCompare(y.date)).slice(0,10);
+ document.getElementById("upCount").textContent=a.length+" itens";
+ document.getElementById("upcoming").innerHTML=a.length?a.map(t=>`<div class="row" onclick="detail('${t.id}')"><div class="row-main"><b>${esc(t.title)}</b><p>${esc(t.subject)} · ${CAT[t.category]}${t.professor?" · "+esc(t.professor):""}</p></div><span class="tag ${t.priority==="alta"?"orange":""}">${t.priority==="alta"?"Alta":fmt(t.date)}</span></div>`).join(""):"<div class='empty'>Nenhum próximo prazo.</div>";
+}
+function renderKanban(){
+ let cols=[["todo","A fazer"],["doing","Em andamento"],["short","Prazo curto"],["late","Atrasado"],["review","Revisando"],["done","Concluído"]];
+ document.getElementById("kanban").innerHTML=cols.map(([s,n])=>{let a=filtered().filter(t=>t.status===s);return `<div class="col" data-status="${s}" ondragover="event.preventDefault()" ondrop="drop(event,'${s}')"><div class="colhead"><b>${n}</b><span class="count">${a.length}</span></div>${a.length?a.map(card).join(""):"<div class='empty'>Nada por aqui</div>"}</div>`}).join("");
+}
+function card(t){return `<div class="card" draggable="true" ondragstart="event.dataTransfer.setData('text/plain','${t.id}')" onclick="detail('${t.id}')"><b>${esc(t.title)}</b><div class="meta"><span class="tag">${esc(t.subject)}</span><span class="tag">${CAT[t.category]}</span>${t.professor?`<span class="tag">${esc(t.professor.split(" — ")[0])}</span>`:""}${t.priority==="alta"?'<span class="tag orange">Alta densidade</span>':""}</div><div class="date">Prazo: ${fmt(t.date)}</div></div>`}
+function drop(e,s){let id=e.dataTransfer.getData("text/plain"),t=db.tasks.find(x=>x.id===id);if(t){t.status=s;save();render()}}
+function renderReadings(){
+ let a=filtered().filter(t=>t.category==="leitura").sort((x,y)=>x.date.localeCompare(y.date));
+ document.getElementById("readCount").textContent=a.length+" leituras";
+ document.getElementById("readings").innerHTML=a.length?a.map(t=>`<div class="row" onclick="detail('${t.id}')"><div class="row-main"><b>${esc(t.reading||t.title)}</b><p>${esc(t.subject)}${t.professor?" · "+esc(t.professor):""} · ${fmt(t.date)}</p>${t.description?`<p>${esc(t.description)}</p>`:""}</div><span class="tag ${t.priority==="alta"?"orange":""}">${t.status==="done"?"Concluída":t.priority==="alta"?"Prioridade":"Pendente"}</span></div>`).join(""):"<div class='empty'>Nenhuma leitura com os filtros atuais.</div>";
+}
+function renderSubjects(){
+ document.getElementById("subjectPills").innerHTML=SUBJECTS.map(s=>`<button class="btn ${filter.subject===s?"soft":""}" onclick="filter.subject='${s.replace(/'/g,"\\'")}';render()">${esc(s)}</button>`).join("");
+ let a=filtered();document.getElementById("subjectList").innerHTML=a.length?a.map(t=>`<div class="row" onclick="detail('${t.id}')"><div class="row-main"><b>${esc(t.title)}</b><p>${esc(t.subject)} · ${CAT[t.category]}${t.professor?" · "+esc(t.professor):""} · Prazo ${fmt(t.date)}</p></div><span class="tag ${t.priority==="alta"?"orange":""}">${STAT[t.status]}</span></div>`).join(""):"<div class='empty'>Nenhuma demanda encontrada.</div>";
+}
+function renderCalendar(){
+ let y=month.getFullYear(),m=month.getMonth(),first=new Date(y,m,1),start=monday(first),names=["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"],h=names.map(n=>`<div class="cell" style="min-height:auto;background:var(--pink-soft);font-weight:800;color:var(--muted)">${n}</div>`).join("");
+ for(let i=0;i<42;i++){let d=new Date(start);d.setDate(start.getDate()+i);let ts=db.tasks.filter(t=>t.date===dateKey(d));h+=`<div class="cell ${d.getMonth()!==m?"muted":""} ${dateKey(d)===dateKey(new Date())?"today":""}"><div class="num">${d.getDate()}</div>${ts.map(t=>`<div class="calitem ${t.priority==="alta"?"high":""}" onclick="detail('${t.id}')">${esc(t.title)}</div>`).join("")}</div>`}
+ document.getElementById("cal").innerHTML=h;document.getElementById("monthLabel").textContent=month.toLocaleDateString("pt-BR",{month:"long",year:"numeric"});
+}
+function changeMonth(n){month.setMonth(month.getMonth()+n);renderCalendar()}
+function openTask(editId){
+ document.getElementById("taskModal").classList.add("open");
+ document.getElementById("taskForm").reset();
+ document.getElementById("subject").innerHTML=SUBJECTS.map(s=>`<option>${esc(s)}</option>`).join("");
+ document.getElementById("date").value=dateKey(new Date());
+ document.getElementById("id").value="";
+ document.getElementById("taskTitle").textContent=editId?"Editar demanda":"Nova demanda";
+ if(editId){
+  let t=db.tasks.find(x=>x.id===editId); if(!t)return;
+  document.getElementById("id").value=t.id;
+  document.getElementById("title").value=t.title;
+  document.getElementById("subject").value=t.subject;
+  document.getElementById("category").value=t.category;
+  document.getElementById("professor").value=t.professor||"";
+  document.getElementById("date").value=t.date;
+  document.getElementById("priority").value=t.priority;
+  document.getElementById("status").value=t.status;
+  document.getElementById("reading").value=t.reading||"";
+  document.getElementById("desc").value=t.description||"";
+ }
+}
+function saveTask(e){e.preventDefault();let o={id:id.value||uid(),title:title.value.trim(),subject:subject.value,category:category.value,professor:professor.value,date:date.value,priority:priority.value,status:status.value,reading:reading.value.trim(),description:desc.value.trim()};let i=db.tasks.findIndex(t=>t.id===o.id);if(i>=0)db.tasks[i]=o;else db.tasks.push(o);save();closeM("taskModal");render()}
+function detail(id){
+ current=id;let t=db.tasks.find(x=>x.id===id);if(!t)return;
+ dTitle.textContent=t.title;dTags.innerHTML=`<span class="tag">${esc(t.subject)}</span><span class="tag">${CAT[t.category]}</span><span class="tag">${STAT[t.status]}</span>${t.priority==="alta"?'<span class="tag orange">Alta densidade</span>':""}`;
+ dBody.innerHTML=`<div class="detail"><label>Prazo</label><div>${fmt(t.date)}</div></div>${t.professor?`<div class="detail"><label>Professor / abordagem</label><div>${esc(t.professor)}</div></div>`:""}${t.reading?`<div class="detail"><label>Livro / artigo</label><div>${esc(t.reading)}</div></div>`:""}<div class="detail"><label>Descrição</label><div>${esc(t.description)||"Sem descrição cadastrada."}</div></div>`;
+ document.getElementById("detailModal").classList.add("open");
+}
+function editTask(){closeM("detailModal");openTask(current)}
+function removeTask(){if(confirm("Excluir esta demanda?")){db.tasks=db.tasks.filter(t=>t.id!==current);save();closeM("detailModal");render()}}
+function closeM(x){document.getElementById(x).classList.remove("open")}
+function openPMO(){document.getElementById("pmoModal").classList.add("open");pmoDate.value=dateKey(new Date());pmoName.value="";updatePMO()}
+function updatePMO(){let arr=STEPS[document.getElementById("pmoType").value];document.getElementById("pmoSteps").innerHTML=arr.map(x=>`<div class="step"><input type="checkbox"><span>${esc(x)}</span><button type="button" onclick="this.parentElement.remove()">×</button></div>`).join("")}
+document.getElementById("pmoType").onchange=updatePMO;
+function createPMO(){
+ let steps=[...pmoSteps.querySelectorAll(".step span")].map(x=>({text:x.textContent,done:false})),p={id:uid(),title:pmoName.value.trim()||"Novo projeto",date:pmoDate.value,steps};
+ db.pmos.push(p);save();closeM("pmoModal");showPMO(p);
+}
+function showPMO(p){
+ current=null;dTitle.textContent="PMO — "+p.title;dTags.innerHTML='<span class="tag">Plano editável</span>';dBody.innerHTML=`<div class="detail"><label>Prazo</label><div>${p.date?fmt(p.date):"Sem prazo"}</div></div><div class="detail"><label>Etapas</label><div class="steps">${p.steps.map((s,i)=>`<div class="step"><input type="checkbox" ${s.done?"checked":""} onchange="toggleStep('${p.id}',${i},this.checked)"><span>${esc(s.text)}</span><button onclick="removeStep('${p.id}',${i})">×</button></div>`).join("")}</div><button class="btn soft" style="margin-top:9px" onclick="addStep('${p.id}')">+ Adicionar etapa</button></div>`;document.getElementById("detailModal").classList.add("open")
+}
+function toggleStep(id,i,v){let p=db.pmos.find(x=>x.id===id);if(p){p.steps[i].done=v;save()}}
+function removeStep(id,i){let p=db.pmos.find(x=>x.id===id);if(p){p.steps.splice(i,1);save();showPMO(p)}}
+function addStep(id){let p=db.pmos.find(x=>x.id===id),x=prompt("Nome da nova etapa:");if(p&&x){p.steps.push({text:x,done:false});save();showPMO(p)}}
+function exportData(){let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:"application/json"}));a.download="backup-organizacao-academica.json";a.click()}
+function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);db={tasks:Array.isArray(x.tasks)?x.tasks:[],pmos:Array.isArray(x.pmos)?x.pmos:[]};save();render();alert("Backup importado com sucesso.")}catch{alert("Arquivo de backup inválido.")}};r.readAsText(f)}
+document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>{view=b.dataset.view;document.querySelectorAll(".view").forEach(x=>x.style.display="none");document.getElementById(view).style.display="block";document.querySelectorAll("[data-view]").forEach(x=>x.classList.toggle("active",x.dataset.view===view));let names={dashboard:["Visão geral","Acompanhe suas demandas, leituras e prazos."],demandas:["Demandas","Organize suas atividades por status."],leituras:["Leituras","Livros e artigos ficam em uma aba própria."],materias:["Por matéria","Veja tudo organizado por disciplina."],calendario:["Calendário","Visualize todos os prazos no mês."]};pageTitle.textContent=names[view][0];pageSub.textContent=names[view][1];render()});
+window.addEventListener("storage",()=>{try{let x=JSON.parse(localStorage.getItem("organizacaoAcademicaFinal"));if(x){db=x;render()}}catch{}});
+window.addEventListener("pageshow",render);
+render();
+</script>
+
+<script>
+(function(){
+  // Mobile sidebar
+  const menuBtn = document.getElementById('mobileMenuBtn');
+  const sidebar = document.querySelector('.sidebar');
+  if(menuBtn && sidebar){
+    menuBtn.addEventListener('click', function(){ sidebar.classList.toggle('open'); });
+    sidebar.addEventListener('click', function(e){
+      if(e.target.closest('.nav-item')) sidebar.classList.remove('open');
+    });
+  }
+
+  // Prevent accidental loss of unsaved form text on rotation/navigation.
+  window.addEventListener('beforeunload', function(){
+    try {
+      const form = document.getElementById('taskForm');
+      if(form && typeof saveDraft === 'function') saveDraft();
+    } catch(e){}
+  });
+
+  // iPad/iPhone: make touch/keyboard behavior friendlier.
+  document.addEventListener('focusin', function(e){
+    if(e.target.matches('input,select,textarea')) {
+      setTimeout(function(){ try { e.target.scrollIntoView({block:'center', behavior:'smooth'}); } catch(_){} }, 120);
+    }
+  });
+
+  // Standalone/PWA support when served from a normal web origin.
+  // Opening a local HTML file still works normally; browsers simply skip registration.
+  if('serviceWorker' in navigator && location.protocol !== 'file:'){
+    const sw = `
+      const CACHE='academico-dashboard-v1';
+      self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll([self.registration.scope]))));
+      self.addEventListener('fetch',e=>{
+        if(e.request.method!=='GET') return;
+        e.respondWith(fetch(e.request).then(r=>{
+          const copy=r.clone(); caches.open(CACHE).then(c=>c.put(e.request,copy)); return r;
+        }).catch(()=>caches.match(e.request)));
+      });
+    `;
+    const blob = new Blob([sw], {type:'text/javascript'});
+    const url = URL.createObjectURL(blob);
+    navigator.serviceWorker.register(url).catch(()=>{});
+  }
+})();
+</script>
+
+
+<script>
+(function(){
+  try{
+    const key='organizacaoAcademicaFinal';
+    const raw=localStorage.getItem(key);
+    if(!raw) return;
+    const d=JSON.parse(raw);
+    if(!d || !Array.isArray(d.tasks)) return;
+    d.tasks=d.tasks.map(x=>Object.assign({
+      id:'task_'+Date.now()+'_'+Math.random().toString(36).slice(2),
+      title:'',subject:'',category:'outro',date:'',priority:'normal',
+      status:'todo',professor:'',reading:'',description:''
+    },x));
+    if(!Array.isArray(d.pmos)) d.pmos=[];
+    localStorage.setItem(key,JSON.stringify(d));
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>
