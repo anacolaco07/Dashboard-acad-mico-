@@ -86,6 +86,39 @@ body { overscroll-behavior-y: none; }
 }
 .mobile-bar { display:none; }
 
+/* --- BOTÃO DE RECOLHER A SIDEBAR --- */
+.sidebar {
+  transition: width 0.25s ease, padding 0.25s ease, transform 0.25s ease;
+}
+.sidebar.collapsed {
+  width: 72px;
+  padding: 22px 10px;
+}
+.sidebar.collapsed .brand div,
+.sidebar.collapsed .nav button span,
+.sidebar.collapsed .side-bottom .btn,
+.sidebar.collapsed .side-bottom .note {
+  display: none;
+}
+.sidebar.collapsed .nav button {
+  text-align: center;
+  padding: 12px 0;
+}
+.toggle-sidebar-btn {
+  border: 0;
+  background: var(--pink-soft);
+  color: var(--pink-dark);
+  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  font-weight: bold;
+  margin-left: auto;
+}
+</style>
+
+
 </style>
 </head>
 <body>
@@ -367,6 +400,22 @@ render();
   }catch(e){}
 })();
 </script>
+
+ <script>
+(function(){
+  const toggleBtn = document.getElementById('toggleSidebarBtn');
+  const sidebar = document.querySelector('.sidebar');
+  
+  if(toggleBtn && sidebar){
+    toggleBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      sidebar.classList.toggle('collapsed');
+      toggleBtn.textContent = sidebar.classList.contains('collapsed') ? '›' : '‹';
+    });
+  }
+})();
+</script>
+
 
 </body>
 </html>
